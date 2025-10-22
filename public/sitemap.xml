@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://kepanduan-advent.vercel.app/</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="id" href="https://kepanduan-advent.vercel.app/" />
+  </url>
+  
+  <url>
+    <loc>https://kepanduan-advent.vercel.app/login</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="id" href="https://kepanduan-advent.vercel.app/login" />
+  </url>
+  
+  <url>
+    <loc>https://kepanduan-advent.vercel.app/register</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="id" href="https://kepanduan-advent.vercel.app/register" />
+  </url>
+  
+  <url>
+    <loc>https://kepanduan-advent.vercel.app/dashboard</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="id" href="https://kepanduan-advent.vercel.app/dashboard" />
+  </url>
+  
+  <url>
+    <loc>https://kepanduan-advent.vercel.app/dashboard/club</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="id" href="https://kepanduan-advent.vercel.app/dashboard/club" />
+  </url>
+  
+  <url>
+    <loc>https://kepanduan-advent.vercel.app/materials</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="id" href="https://kepanduan-advent.vercel.app/materials" />
+  </url>
+  
+  <url>
+    <loc>https://kepanduan-advent.vercel.app/tentang</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="id" href="https://kepanduan-advent.vercel.app/tentang" />
+  </url>
+  
+  <url>
+    <loc>https://kepanduan-advent.vercel.app/mars</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="id" href="https://kepanduan-advent.vercel.app/mars" />
+  </url>
+  
+  <url>
+    <loc>https://kepanduan-advent.vercel.app/kalender</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="id" href="https://kepanduan-advent.vercel.app/kalender" />
+  </url>
+  
+  <url>
+    <loc>https://kepanduan-advent.vercel.app/seragam</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="id" href="https://kepanduan-advent.vercel.app/seragam" />
+  </url>
+  
+  <url>
+    <loc>https://kepanduan-advent.vercel.app/buku-panduan</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="id" href="https://kepanduan-advent.vercel.app/buku-panduan" />
+  </url>
+  
+  <url>
+    <loc>https://kepanduan-advent.vercel.app/honors</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="id" href="https://kepanduan-advent.vercel.app/honors" />
+  </url>
+  
+  <url>
+    <loc>https://kepanduan-advent.vercel.app/terms-of-service</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="id" href="https://kepanduan-advent.vercel.app/terms-of-service" />
+  </url>
+  
+  <url>
+    <loc>https://kepanduan-advent.vercel.app/privacy-policy</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="id" href="https://kepanduan-advent.vercel.app/privacy-policy" />
+  </url>
+</urlset>

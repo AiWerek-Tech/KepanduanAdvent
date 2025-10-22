@@ -1,0 +1,33 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://kepanduan-advent.vercel.app/sitemap.xml
+
+# Allow search engines to crawl all important pages
+Allow: /login
+Allow: /register
+Allow: /dashboard
+Allow: /materials
+Allow: /tentang
+Allow: /mars
+Allow: /kalender
+Allow: /seragam
+Allow: /buku-panduan
+Allow: /honors
+
+# Disallow crawling of API endpoints and admin areas
+Disallow: /api/
+Disallow: /dashboard/admin
+Disallow: /dashboard/users
+Disallow: /dashboard/system
+Disallow: /_next/
+Disallow: /icons/
+Disallow: /screenshots/
+
+# Disallow crawling of test pages
+Disallow: /test-dashboard
+Disallow: /demo/
+
+# Crawl delay (optional, be nice to servers)
+Crawl-delay: 1

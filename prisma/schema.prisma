@@ -1,0 +1,360 @@
+// Simplified Prisma Schema for Club Management System
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  role      UserRole @default(ADVENTURER)
+  avatar    String?
+  phone     String?
+  address   String?
+  gender    String?
+  church    String?
+  district  String?
+  conference String?
+  isActive  Boolean  @default(true)
+  clubId    String?
+  positionId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  club      Club?    @relation(fields: [clubId], references: [id], onDelete: SetNull)
+  position  ClubPosition? @relation(fields: [positionId], references: [id], onDelete: SetNull)
+  progress  UserProgress[]
+  investitureProgress InvestitureUserProgress[]
+  reflections Reflection[]
+  certificates Certificate[]
+  events    Event[]
+  createdClubs Club[] @relation("ClubCreator")
+  createdActivities Activity[] @relation("ActivityCreator")
+  serviceYears UserClubYear[]
+
+  @@map("users")
+}
+
+model Club {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  logo        String?
+  flag        String?  // Bendera klub
+  email       String?
+  phone       String?
+  address     String?
+  church      String?
+  district    String?
+  conference  String?
+  history     String?  // Sejarah klub
+  isActive    Boolean  @default(true)
+  createdBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  creator       User?           @relation("ClubCreator", fields: [createdBy], references: [id])
+  members       User[]
+  positions     ClubPosition[]
+  activities    Activity[]
+  certificates  Certificate[]
+  serviceYears  UserClubYear[]
+  clubYears     ClubYear[]
+
+  @@map("clubs")
+}
+
+model ClubPosition {
+  id          String   @id @default(cuid())
+  clubId      String
+  title       String
+  description String?
+  level       PositionLevel @default(MEMBER)
+  permissions Json?    // Store permissions as JSON
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  club        Club @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  members     User[]
+  serviceYears UserClubYear[]
+
+  @@map("club_positions")
+}
+
+model ClubYear {
+  id          String   @id @default(cuid())
+  clubId      String
+  year        Int
+  theme       String?
+  startDate   DateTime
+  endDate     DateTime
+  classStartDate DateTime? // Tanggal mulai kelas
+  graduationDate DateTime? // Tanggal penamatan
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  club        Club @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  serviceYears UserClubYear[]
+
+  @@unique([clubId, year])
+  @@map("club_years")
+}
+
+model UserClubYear {
+  id         String   @id @default(cuid())
+  userId     String
+  clubId     String
+  yearId     String
+  positionId String?
+  classLevel String?  // Sub-class (Little Lamb, Friend, etc.)
+  mentorId   String?  // Pembina/mentor
+  startDate  DateTime
+  endDate    DateTime?
+  isActive   Boolean  @default(true)
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  club     Club         @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  year     ClubYear     @relation(fields: [yearId], references: [id], onDelete: Cascade)
+  position ClubPosition? @relation(fields: [positionId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, clubId, yearId])
+  @@map("user_club_years")
+}
+
+model Activity {
+  id          String       @id @default(cuid())
+  clubId      String
+  title       String
+  description String?
+  category    String       // Pelatihan, Ibadah, Penamatan, Kemah, dll.
+  startDate   DateTime
+  endDate     DateTime?
+  location    String?
+  status      String       @default("upcoming")
+  isReminder  Boolean      @default(false) // Auto reminder
+  createdBy   String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  // Relations
+  club    Club @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  creator User @relation("ActivityCreator", fields: [createdBy], references: [id])
+
+  @@map("activities")
+}
+
+model Material {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  content     String?
+  pdfUrl      String?
+  audioUrl    String?
+  youtubeUrl  String?
+  category    String
+  classLevel  ClassLevel
+  subClass    String?
+  order       Int        @default(0)
+  isRequired  Boolean    @default(true)
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  // Relations
+  progress    UserProgress[]
+  reflections Reflection[]
+
+  @@map("materials")
+}
+
+model InvestitureChapter {
+  id          String   @id @default(cuid())
+  nameEN      String   // English name
+  nameID      String   // Indonesian name
+  description String?
+  iconUrl     String?  // Official icon URL
+  color       String?  // Theme color for UI
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  requirements InvestitureRequirement[]
+  userProgress InvestitureUserProgress[]
+
+  @@map("investiture_chapters")
+}
+
+model InvestitureRequirement {
+  id           String   @id @default(cuid())
+  chapterId    String
+  requirement  String   // Requirement text
+  order        Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  chapter      InvestitureChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  userProgress InvestitureUserProgress[]
+
+  @@map("investiture_requirements")
+}
+
+model InvestitureUserProgress {
+  id            String   @id @default(cuid())
+  userId        String
+  chapterId     String
+  requirementId String
+  isCompleted   Boolean  @default(false)
+  completedAt   DateTime?
+  mentorNotes   String?  // Catatan dari pembina
+  isValidated   Boolean  @default(false) // Validasi pembina
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  user         User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapter      InvestitureChapter    @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  requirement  InvestitureRequirement @relation(fields: [requirementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, requirementId])
+  @@map("investiture_user_progress")
+}
+
+model UserProgress {
+  id          String         @id @default(cuid())
+  userId      String
+  materialId  String
+  status      ProgressStatus @default(NOT_STARTED)
+  completedAt DateTime?
+  mentorNotes String?        // Catatan dari pembina
+  isValidated Boolean        @default(false) // Validasi pembina
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, materialId])
+  @@map("user_progress")
+}
+
+model Reflection {
+  id         String   @id @default(cuid())
+  userId     String
+  materialId String
+  content    String
+  mentorFeedback String? // Feedback dari pembina
+  isRead     Boolean  @default(false) // Sudah dibaca pembina
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+
+  @@map("reflections")
+}
+
+model Certificate {
+  id          String   @id @default(cuid())
+  userId      String
+  clubId      String?
+  type        String
+  title       String
+  description String?
+  qrCode      String
+  pdfUrl      String
+  directorName String? // Nama Direktur Klub
+  issuedAt    DateTime @default(now())
+  expiresAt   DateTime?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  club Club? @relation(fields: [clubId], references: [id], onDelete: SetNull)
+
+  @@map("certificates")
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  date        DateTime
+  location    String?
+  eventType   String
+  targetRole  UserRole?
+  createdBy   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+
+  @@map("events")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  userId    String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("notifications")
+}
+
+enum UserRole {
+  ADVENTURER
+  PATHFINDER
+  CMG
+  MASTER_GUIDE
+  CONTRIBUTOR
+  ADMIN
+}
+
+enum PositionLevel {
+  MEMBER
+  INSTRUCTOR
+  MENTOR
+  CHAPLAIN
+  SECRETARY
+  TREASURER
+  DIRECTOR
+  VICE_DIRECTOR
+  STAFF
+}
+
+enum ClassLevel {
+  ADVENTURER
+  PATHFINDER
+  MASTER_GUIDE
+}
+
+enum ProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}

@@ -1,0 +1,209 @@
+// Simplified Prisma Schema for Club Management System
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  role      UserRole @default(ADVENTURER)
+  avatar    String?
+  phone     String?
+  address   String?
+  gender    String?
+  church    String?
+  district  String?
+  conference String?
+  isActive  Boolean  @default(true)
+  clubId    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  club      Club?    @relation(fields: [clubId], references: [id], onDelete: SetNull)
+  progress  UserProgress[]
+  reflections Reflection[]
+  certificates Certificate[]
+  events    Event[]
+  createdClubs Club[] @relation("ClubCreator")
+
+  @@map("users")
+}
+
+model Club {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  logo        String?
+  email       String?
+  phone       String?
+  address     String?
+  church      String?
+  district    String?
+  conference  String?
+  isActive    Boolean  @default(true)
+  createdBy   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  creator     User     @relation("ClubCreator", fields: [createdBy], references: [id])
+  members     User[]
+  activities  Activity[]
+  certificates Certificate[]
+
+  @@map("clubs")
+}
+
+model Activity {
+  id          String       @id @default(cuid())
+  clubId      String
+  title       String
+  description String?
+  category    String
+  startDate   DateTime
+  endDate     DateTime?
+  location    String?
+  status      String       @default("upcoming")
+  createdBy   String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  // Relations
+  club    Club @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  creator User @relation(fields: [createdBy], references: [id])
+
+  @@map("activities")
+}
+
+model Material {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  content     String?
+  pdfUrl      String?
+  audioUrl    String?
+  youtubeUrl  String?
+  category    String
+  classLevel  ClassLevel
+  subClass    String?
+  order       Int        @default(0)
+  isRequired  Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  // Relations
+  progress    UserProgress[]
+  reflections Reflection[]
+
+  @@map("materials")
+}
+
+model UserProgress {
+  id          String         @id @default(cuid())
+  userId      String
+  materialId  String
+  status      ProgressStatus @default(NOT_STARTED)
+  completedAt DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, materialId])
+  @@map("user_progress")
+}
+
+model Reflection {
+  id         String   @id @default(cuid())
+  userId     String
+  materialId String
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+
+  @@map("reflections")
+}
+
+model Certificate {
+  id          String   @id @default(cuid())
+  userId      String
+  clubId      String?
+  type        String
+  title       String
+  description String?
+  qrCode      String
+  pdfUrl      String
+  issuedAt    DateTime @default(now())
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  club Club? @relation(fields: [clubId], references: [id], onDelete: SetNull)
+
+  @@map("certificates")
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  date        DateTime
+  location    String?
+  eventType   String
+  targetRole  UserRole?
+  createdBy   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+
+  @@map("events")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  userId    String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("notifications")
+}
+
+enum UserRole {
+  ADVENTURER
+  PATHFINDER
+  CMG
+  MASTER_GUIDE
+  CONTRIBUTOR
+  ADMIN
+}
+
+enum ClassLevel {
+  ADVENTURER
+  PATHFINDER
+  MASTER_GUIDE
+}
+
+enum ProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}

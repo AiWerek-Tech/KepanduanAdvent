@@ -1,0 +1,42 @@
+{
+  "name": "Kepanduan Advent - Platform Digital Pembelajaran",
+  "short_name": "Kepanduan Advent",
+  "description": "Platform digital interaktif untuk pembelajaran dan pelatihan Adventurer, Pathfinder, dan Master Guide",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#8E2DE2",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-1024x1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["education", "productivity", "lifestyle"],
+  "lang": "id-ID",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false
+}
